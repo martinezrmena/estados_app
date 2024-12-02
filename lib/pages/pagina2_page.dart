@@ -1,6 +1,7 @@
-import 'package:flutter/material.dart';
-
 import 'package:estados_app/models/usuario.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import 'package:estados_app/services/usuario_service.dart';
 
 
@@ -10,16 +11,14 @@ class Pagina2Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final usuarioService = Provider.of<UsuarioService>(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: StreamBuilder(
-          stream: usuarioService.usuarioStream,
-          builder: (BuildContext context, AsyncSnapshot<Usuario> snapshot){
-            return snapshot.hasData
-              ? Text('Nombre: ${ snapshot.data?.nombre }')
-              : const Text('Pagina 2');
-          },
-        ),
+        title: usuarioService.existeUsuario
+          ? Text('Nombre: ${ usuarioService.usuario!.nombre }')
+          : const Text('Pagina 2'),
       ),
       body: Center(
         child: Column(
@@ -29,10 +28,12 @@ class Pagina2Page extends StatelessWidget {
             MaterialButton(
               color: Colors.blue,
               onPressed: () {
-
-                final nuevoUsuario = Usuario( nombre: 'Fernando', edad: 35 );
-
-                usuarioService.cargarUsuario(nuevoUsuario);
+                final newUser = Usuario(
+                  nombre: 'Fernando Herrera', 
+                  edad: 34,
+                  profesiones: ['Fullstack Developer', 'Video Jugador Experto']
+                );
+                usuarioService.usuario = newUser;
               },
               child: const Text('Establecer Usuario', style: TextStyle( color: Colors.white ) )
             ),
@@ -40,7 +41,7 @@ class Pagina2Page extends StatelessWidget {
             MaterialButton(
               color: Colors.blue,
               onPressed: () {
-                usuarioService.cambiarEdad(30);
+                usuarioService.cambiarEdad(45);
               },
               child: const Text('Cambiar Edad', style: TextStyle( color: Colors.white ) )
             ),
@@ -48,7 +49,7 @@ class Pagina2Page extends StatelessWidget {
             MaterialButton(
               color: Colors.blue,
               onPressed: () {
-
+                usuarioService.agregarProfesion();
               },
               child: const Text('Añadir Profesion', style: TextStyle( color: Colors.white ) )
             ),
