@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:estados_app/models/usuario.dart';
-import 'package:estados_app/services/usuario_service.dart';
+// import 'package:estados_app/services/usuario_service.dart';
 
 class Pagina1Page extends StatelessWidget {
   
@@ -13,16 +13,16 @@ class Pagina1Page extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Pagina 1'),
       ),
-      body: StreamBuilder(
-        stream: usuarioService.usuarioStream,
-        builder: (BuildContext context, AsyncSnapshot<Usuario> snapshot){
+      // body: StreamBuilder(
+      //   // stream: usuarioService.usuarioStream,
+      //   builder: (BuildContext context, AsyncSnapshot<Usuario> snapshot){
           
-          return snapshot.hasData
-            ? InformacionUsuario( snapshot.data )
-            : const Center(child: Text( 'No hay información del usuario' ) );
+      //     return snapshot.hasData
+      //       ? InformacionUsuario( snapshot.data )
+      //       : const Center(child: Text( 'No hay información del usuario' ) );
 
-        },
-      ),
+      //   },
+      // ),
 
      floatingActionButton: FloatingActionButton(
        child: const Icon( Icons.accessibility_new ),
