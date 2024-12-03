@@ -1,7 +1,8 @@
-import 'package:flutter/material.dart';
-
 import 'package:estados_app/models/usuario.dart';
-import 'package:estados_app/services/usuario_service.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:estados_app/bloc/usuario/usuario_cubit.dart';
 
 
 class Pagina2Page extends StatelessWidget {
@@ -10,16 +11,12 @@ class Pagina2Page extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final usuarioCubit = context.read<UsuarioCubit>();
+
     return Scaffold(
       appBar: AppBar(
-        title: StreamBuilder(
-          stream: usuarioService.usuarioStream,
-          builder: (BuildContext context, AsyncSnapshot<Usuario> snapshot){
-            return snapshot.hasData
-              ? Text('Nombre: ${ snapshot.data?.nombre }')
-              : const Text('Pagina 2');
-          },
-        ),
+        title: const Text('Pagina 2'),
       ),
       body: Center(
         child: Column(
@@ -29,10 +26,17 @@ class Pagina2Page extends StatelessWidget {
             MaterialButton(
               color: Colors.blue,
               onPressed: () {
+                
+                final newUser = Usuario(
+                  nombre: 'Fernando Herrera',
+                  edad: 34,
+                  profesiones: [
+                    'FullStack Developer',
+                    'Videojugador Veterano'
+                  ]
+                );
 
-                final nuevoUsuario = Usuario( nombre: 'Fernando', edad: 35 );
-
-                usuarioService.cargarUsuario(nuevoUsuario);
+                usuarioCubit.seleccionarUsuario(newUser);
               },
               child: const Text('Establecer Usuario', style: TextStyle( color: Colors.white ) )
             ),
@@ -40,7 +44,7 @@ class Pagina2Page extends StatelessWidget {
             MaterialButton(
               color: Colors.blue,
               onPressed: () {
-                usuarioService.cambiarEdad(30);
+                usuarioCubit.cambiarEdad(30);
               },
               child: const Text('Cambiar Edad', style: TextStyle( color: Colors.white ) )
             ),
@@ -48,7 +52,7 @@ class Pagina2Page extends StatelessWidget {
             MaterialButton(
               color: Colors.blue,
               onPressed: () {
-
+                usuarioCubit.agregarProfesion();
               },
               child: const Text('Añadir Profesion', style: TextStyle( color: Colors.white ) )
             ),
